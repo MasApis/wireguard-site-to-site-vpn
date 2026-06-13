@@ -31,8 +31,6 @@ Pada tahap awal ini, kami merancang topologi interkoneksi jaringan antar dua lok
 
 ### B. Tabel IP dan Subnetting
 
-### B. Tabel IP dan Subnetting
-
 | Lokasi / Segmen | Perangkat / Interface | Alamat IP | Subnet Mask / Prefix | Keterangan / Gateway |
 | :--- | :--- | :--- | :--- | :--- |
 | **Link Publik (WAN A)**| Router-ISP (ether2) | `203.0.113.1` | `255.255.255.252` (/30)| Gerbang publik arah Kantor Pusat |
