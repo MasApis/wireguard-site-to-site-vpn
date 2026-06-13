@@ -31,19 +31,23 @@ Pada tahap awal ini, kami merancang topologi interkoneksi jaringan antar dua lok
 
 ### B. Tabel IP dan Subnetting
 
+### B. Tabel IP dan Subnetting
+
 | Lokasi / Segmen | Perangkat / Interface | Alamat IP | Subnet Mask / Prefix | Keterangan / Gateway |
 | :--- | :--- | :--- | :--- | :--- |
-| **Site A (Pusat)** | Network ID LAN | `192.168.10.0` | `255.255.255.0` (/24) | Subnet untuk client di Kantor Pusat |
-| | Gateway A (LAN) | `192.168.10.1` | `255.255.255.0` (/24) | IP lokal internal Router Pusat |
-| | Gateway A (WAN) | `180.250.10.2` | `255.255.255.252` (/30)| IP Publik interface luar (ke Internet) |
-| | Client Pusat (PC-01)| `192.168.10.10`| `255.255.255.0` (/24) | Gateway: `192.168.10.1` |
-| **Site B (Cabang)**| Network ID LAN | `192.168.20.0` | `255.255.255.0` (/24) | Subnet untuk client di Kantor Cabang |
-| | Gateway B (LAN) | `192.168.20.1` | `255.255.255.0` (/24) | IP lokal internal Router Cabang |
-| | Gateway B (WAN) | `180.250.20.2` | `255.255.255.252` (/30)| IP Publik interface luar (ke Internet) |
-| | Client Cabang (PC-02)| `192.168.20.10`| `255.255.255.0` (/24) | Gateway: `192.168.20.1` |
-| **WireGuard Tunnel**| Network ID VPN | `10.0.0.0` | `255.255.255.0` (/24) | Segmen IP khusus di dalam *tunnel* |
-| | Interface `wg0` (Pusat)| `10.0.0.1` | Point-to-Point (/24) | Peer IP untuk Router Pusat |
-| | Interface `wg0` (Cabang)| `10.0.0.2` | Point-to-Point (/24) | Peer IP untuk Router Cabang |
+| **Link Publik (WAN A)**| Router-ISP (ether2) | `203.0.113.1` | `255.255.255.252` (/30)| Gerbang publik arah Kantor Pusat |
+| | Mikrotik-R-A (ether1) | `203.0.113.2` | `255.255.255.252` (/30)| IP WAN Router Pusat (Gateway: `203.0.113.1`) |
+| **Link Publik (WAN B)**| Router-ISP (ether3) | `198.51.100.1` | `255.255.255.252` (/30)| Gerbang publik arah Kantor Cabang |
+| | Mikrotik-R-B (ether1) | `198.51.100.2` | `255.255.255.252` (/30)| IP WAN Router Cabang (Gateway: `198.51.100.1`) |
+| **Site A (Pusat)** | Network ID LAN | `172.16.10.0` | `255.255.255.0` (/24) | Subnet lokal internal Kantor Pusat |
+| | Mikrotik-R-A (ether2) | `172.16.10.1` | `255.255.255.0` (/24) | IP Gateway lokal untuk LAN Pusat |
+| | Ubuntu-WG-A (ens3) | `172.16.10.2` | `255.255.255.0` (/24) | Server VPN Pusat (Gateway: `172.16.10.1`) |
+| **Site B (Cabang)**| Network ID LAN | `172.16.20.0` | `255.255.255.0` (/24) | Subnet lokal internal Kantor Cabang |
+| | Mikrotik-R-B (ether2) | `172.16.20.1` | `255.255.255.0` (/24) | IP Gateway lokal untuk LAN Cabang |
+| | Ubuntu-WG-B (ens3) | `172.16.20.2` | `255.255.255.0` (/24) | Server VPN Cabang (Gateway: `172.16.20.1`) |
+| **WireGuard Tunnel**| Network ID VPN | `10.254.254.0`| `255.255.255.252` (/30)| Segmen network virtual *inter-tunnel* |
+| | Interface `wg0` (Pusat)| `10.254.254.1`| Point-to-Point (/30)  | IP Tunnel Endpoint Server Pusat |
+| | Interface `wg0` (Cabang)| `10.254.254.2`| Point-to-Point (/30)  | IP Tunnel Endpoint Server Cabang |
 
 ---
 *Pembaruan dokumentasi untuk Progres 2 (Routing Dasar) akan diperbarui pada milestone berikutnya.*
